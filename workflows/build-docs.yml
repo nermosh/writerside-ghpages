@@ -5,6 +5,11 @@ on:
      branches: ["master"]
   workflow_dispatch:
 
+permissions:
+  contents: read
+  id-token: write
+  pages: write
+
 env:
   INSTANCE: 'Writerside/ar'
   DOCKER_VERSION: '2025.04.8412'
@@ -77,9 +82,6 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     needs: [ build, test ]
     runs-on: ubuntu-latest
-    permissions:
-      id-token: write
-      contents: read
     steps:
       - name: Download artifacts
         uses: actions/download-artifact@v4
