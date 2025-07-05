@@ -2,8 +2,13 @@ name: Build documentation
 
 on:
   push:
-     branches: ["master"]
+    branches: ["master"]
   workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+  pages: write
 
 env:
   INSTANCE: 'Writerside/ar'
@@ -28,12 +33,12 @@ jobs:
           INSTANCE_ID_UPPER=$(echo "$INSTANCE" | tr '[:lower:]' '[:upper:]')
           ARTIFACT="webHelp${INSTANCE_ID_UPPER}2-all.zip"
           ALGOLIA_ARTIFACT="algolia-indexes-${INSTANCE_ID_UPPER}.zip"
-            
+          
           # Print the values
           echo "INSTANCE_ID_UPPER: $INSTANCE_ID_UPPER"
           echo "ARTIFACT: $ARTIFACT"
           echo "ALGOLIA_ARTIFACT: $ALGOLIA_ARTIFACT"
-            
+          
           # Set the environment variables and outputs
           echo "INSTANCE_ID_UPPER=$INSTANCE_ID_UPPER" >> $GITHUB_ENV
           echo "ARTIFACT=$ARTIFACT" >> $GITHUB_ENV
