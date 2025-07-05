@@ -6,7 +6,7 @@
                   name="API Reference" start-page="API-getting-started.md">
 
     <toc-element topic="API-getting-started.md"/>
-    <toc-element topic="API-reference.md">
+    <toc-element topic="API-reference.md"> // Top-level
         <toc-element topic="Получить_список_всех_пользователей.md"/>
         <toc-element topic="Создать_нового_пользователя.md"/>
         <toc-element topic="Получить_информацию_о_пользователе_по_ID.md"/>
