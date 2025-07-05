@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rules SYSTEM "https://resources.jetbrains.com/writerside/1.0/redirection-rules.dtd">
+<rules>
+    <!-- format is as follows
+    <rule id="<unique id>">
+        <accepts>page.html</accepts>
+    </rule>
+    -->
+    <rule id="31f9f0fb">
+        <description>Created after removal of "error" from API Reference</description>
+        <accepts>error.html</accepts>
+    </rule>
+    <rule id="1beb0839">
+        <description>Created after removal of "PartialUserUpdate" from API Reference</description>
+        <accepts>PartialUserUpdate.html</accepts>
+    </rule>
+    <rule id="3ebde0e6">
+        <description>Created after removal of "CreateUser" from API Reference</description>
+        <accepts>CreateUser.html</accepts>
+    </rule>
+    <rule id="2f567e74">
+        <description>Created after removal of "User" from API Reference</description>
+        <accepts>User.html</accepts>
+    </rule>
+    <rule id="437c82d5">
+        <description>Created after removal of "UserProperties" from API Reference</description>
+        <accepts>UserProperties.html</accepts>
+    </rule>
+    <rule id="161a7650">
+        <description>Created after removal of "Schemas" from API Reference</description>
+        <accepts>Schemas.html</accepts>
+    </rule>
+    <rule id="7f689b4b">
+        <description>Created after removal of "error" from API Reference</description>
+        <accepts>error.html</accepts>
+    </rule>
+    <rule id="36405cd6">
+        <description>Created after removal of "PartialUserUpdate" from API Reference</description>
+        <accepts>PartialUserUpdate.html</accepts>
+    </rule>
+    <rule id="8234195">
+        <description>Created after removal of "CreateUser" from API Reference</description>
+        <accepts>CreateUser.html</accepts>
+    </rule>
+    <rule id="709c691c">
+        <description>Created after removal of "User" from API Reference</description>
+        <accepts>User.html</accepts>
+    </rule>
+    <rule id="1bdc0021">
+        <description>Created after removal of "UserProperties" from API Reference</description>
+        <accepts>UserProperties.html</accepts>
+    </rule>
+</rules>

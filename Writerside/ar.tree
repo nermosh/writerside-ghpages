@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE instance-profile
+        SYSTEM "https://resources.jetbrains.com/writerside/1.0/product-profile.dtd">
+
+<instance-profile id="ar"
+                  name="API Reference" start-page="API-getting-started.md">
+
+    <toc-element topic="API-getting-started.md"/>
+    <toc-element topic="API-reference.md"/>
+
+        <toc-element topic="Получить_список_всех_пользователей.md"/>
+        <toc-element topic="Создать_нового_пользователя.md"/>
+        <toc-element topic="Получить_информацию_о_пользователе_по_ID.md"/>
+        <toc-element topic="Обновить_отдельные_параметры_пользователя.md"/>
+        <toc-element topic="Перезаписать_все_данные_пользователя.md"/>
+        <toc-element topic="Удалить_пользователя.md"/>
+    </toc-element>
+</instance-profile>

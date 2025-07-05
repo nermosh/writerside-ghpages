@@ -1,0 +1,424 @@
+openapi: 3.0.0
+
+info:
+  title: Пример API для работы с пользователями
+  description: API для создания, получения, обновления и удаления пользователей.
+  version: 1.0.0
+  contact:
+    name: Команда поддержки API
+    url: http://www.example.com/support
+    email: support@example.com
+
+externalDocs:
+  description: Более подробная информация о работе с этим API
+  url: https://your-company.com/docs/api-guide
+
+security:
+  - api_key: []
+
+servers:
+  - url: https://api.documentat.io/api/prod
+    description: Основной сервер
+  - url: https://api.documentat.io/api/dev
+    description: Тестовый сервер
+
+paths:
+  /users:
+    get:
+      summary: Получить список всех пользователей
+      description: Этот метод позволяет получить постраничный список всех зарегистрированных пользователей системы. Результаты могут быть отфильтрованы и ограничены по количеству.
+      operationId: usersGET
+      tags:
+        - users
+      parameters:
+        - name: limit
+          in: query
+          required: false
+          description: >
+            Максимальное количество пользователей, которое должно быть возвращено на одной странице ответа.
+            Используется для пагинации. Если не указано, по умолчанию возвращается 10 элементов.
+          schema:
+            type: integer
+            default: 10
+      responses:
+        "200":
+          $ref: "#/components/responses/UserListSuccess"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "500":
+          $ref: "#/components/responses/ServerError"
+
+    post:
+      summary: Создать нового пользователя
+      operationId: usersPOST
+      tags:
+        - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateUser"
+      responses:
+        "201":
+          $ref: "#/components/responses/UserCreationSuccess"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "422":
+          $ref: "#/components/responses/UnprocessableEntity"
+        "500":
+          $ref: "#/components/responses/ServerError"
+
+  /users/{id}:
+    get:
+      summary: Получить информацию о пользователе по ID
+      operationId: usersIdGET
+      tags:
+        - users
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Уникальный идентификатор пользователя
+          schema:
+            type: integer
+      responses:
+        "200":
+          $ref: "#/components/responses/Success"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/UserNotFound"
+        "500":
+          $ref: "#/components/responses/ServerError"
+
+    put:
+      summary: "Перезаписать все данные пользователя по ID"
+      operationId: usersIdPUT
+      tags:
+        - users
+      servers:
+        - url: https://api.documentat.io/api/dev
+          description: Тестовый сервер
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateUser"
+      responses:
+        "200":
+          $ref: "#/components/responses/UserUpdateSuccess"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/UserNotFound"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowed"
+        "422":
+          $ref: "#/components/responses/UnprocessableEntity"
+        "500":
+          $ref: "#/components/responses/ServerError"
+
+    patch:
+      summary: "Обновить отдельные параметры пользователя по ID"
+      operationId: usersIdPATCH
+      tags:
+        - users
+      servers:
+        - url: https://api.documentat.io/api/dev
+          description: Тестовый сервер
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PartialUserUpdate"
+      responses:
+        "200":
+          $ref: "#/components/responses/UserUpdateSuccess"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/UserNotFound"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowed"
+        "422":
+          $ref: "#/components/responses/UnprocessableEntity"
+        "500":
+          $ref: "#/components/responses/ServerError"
+
+    delete:
+      summary: Удалить пользователя по ID
+      operationId: usersIdDELETE
+      tags:
+        - users
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Уникальный идентификатор пользователя
+          schema:
+            type: integer
+      responses:
+        "204":
+          $ref: "#/components/responses/UserDeleteSuccess"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/UserNotFound"
+        "500":
+          $ref: "#/components/responses/ServerError"
+
+components:
+  schemas:
+    UserProperties:
+      type: object
+      properties:
+        username:
+          type: string
+          description: Уникальный логин пользователя
+          pattern: "^[a-zA-Z0-9_]+$"
+          example: gchabukiani
+        email:
+          type: string
+          description: Адрес электронной почты
+          example: g-chabukiani@example.com
+        firstName:
+          type: string
+          description: Имя (как в паспорте)
+          example: Гиа
+        lastName:
+          type: string
+          description: Фамилия (как в паспорте)
+          example: Чабукиани
+        address:
+          type: object
+          description: Адрес проживания
+          properties:
+            country:
+              type: string
+              example: Грузия
+              description: Страна проживания
+            city:
+              type: string
+              example: Тбилиси
+              description: Город проживания
+            street:
+              type: string
+              example: Цотне Дадиани
+              description: Улица (как в кадастре)
+            house:
+              type: string
+              example: 34
+              description: Номер дома с указанием корпуса
+          required:
+            - country
+            - city
+            - street
+            - house
+        age:
+          type: integer
+          description: Возраст (полных лет)
+          example: 25
+          minimum: 0
+          maximum: 120
+        isEmployee:
+          type: boolean
+          description: Является ли сотрудником (да/нет)
+          default: true
+        accountStatus:
+          type: string
+          description: Статус учётной записи
+          default: active
+          enum:
+            - active
+            - inactive
+            - suspended
+
+    User:
+      type: object
+      required:
+        - id
+        - username
+        - email
+        - firstName
+        - lastName
+        - address
+        - age
+        - isEmployee
+        - accountStatus
+      properties:
+        id:
+          type: integer
+          minimum: 1
+          format: int64
+          description: Уникальный идентификатор пользователя
+      allOf:
+        - $ref: "#/components/schemas/UserProperties"
+
+    CreateUser:
+      type: object
+      required:
+        - username
+        - email
+        - firstName
+        - lastName
+        - address
+        - age
+        - isEmployee
+        - accountStatus
+      allOf:
+        - $ref: "#/components/schemas/UserProperties"
+
+    PartialUserUpdate:
+      type: object
+      allOf:
+        - $ref: "#/components/schemas/UserProperties"
+
+    error:
+      required:
+        - code
+        - message
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: Код ошибки (HTTP-статус)
+        message:
+          type: string
+          description: Сообщение об ошибке
+
+  responses:
+    UserListSuccess:
+      description: Список пользователей успешно получен
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/User"
+
+    Success:
+      description: Данные успешно получены
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/User"
+
+    UserCreationSuccess:
+      description: Пользователь успешно создан
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/User"
+          example:
+            id: 123
+            username: g_chabukiani1
+            email: g-chabukiani@example.com
+            firstName: Гиа
+            lastName: Чабукиани
+            address:
+              country: Грузия
+              city: Тбилиси
+              street: Цотне Дадиани
+              house: 34
+            age: 32
+            isEmployee: true
+            accountStatus: active
+
+    UserUpdateSuccess:
+      description: Данные пользователя успешно обновлены
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/User"
+          example:
+            code: 200
+
+    UserDeleteSuccess:
+      description: Пользователь успешно удален
+
+
+    UserNotFound:
+      description: "Пользователь не найден"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/error"
+          example:
+            code: 404
+            message: Не найден ресурс
+
+    Unauthorized:
+      description: "Ошибка авторизации"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/error"
+          example:
+            code: 401
+            message: Неавторизованный доступ
+
+    Conflict:
+      description: "Конфликт"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/error"
+          example:
+            code: 409
+            message: Конфликт при обновлении данных пользователя
+
+    MethodNotAllowed:
+      description: "Неверный метод"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/error"
+          example:
+            code: 405
+            message: Данный метод не поддерживается
+    ServerError:
+      description: "Ошибка сервера"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/error"
+          example:
+            code: 500
+            message: Сервер недоступен
+
+    UnprocessableEntity:
+      description: "Ошибка валидации: внесённые данные не соответствуют ожидаемому формату"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/error"
+          example:
+            code: 422
+            message: "Невозможно обработать содержимое запроса"
+
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: Token
+      in: header
+
+tags:
+  - name: users
+    description: Операции с пользователями
