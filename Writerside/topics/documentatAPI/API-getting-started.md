@@ -91,5 +91,3 @@ curl -X GET "https://api.documentat.io/api/prod/users?limit=2" \
   }
 ]
 ```
-
------
